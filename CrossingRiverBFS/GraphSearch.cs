@@ -40,7 +40,7 @@ namespace CrossingRiverBFS
                 border.RemoveAt(0);
                 //adding node to the explored set
                 explored.Add(currentNode.Node);
-                //AddNeighbors(currentNode.Node);
+                AddNeighbors(currentNode.Node);
                 foreach (Neighbor neighbor in currentNode.Node.Neighbors)
                 {
                     if (!IsInTheBorder(neighbor.Node, border) && !explored.Contains(neighbor.Node))
@@ -62,7 +62,7 @@ namespace CrossingRiverBFS
                         }
                         border.Add(newPath);
                         //foreach (Path p in border) {
-                        //    Console.Write(p.Node+" c:"+p.Cost+" e:"+p.Node.Expectation+"s: "+(p.Cost+p.Node.Expectation)+"; ");                            
+                        //    Console.Write(p.Node+" c:"+p.Cost+"; ");                            
                         //}
                         //Console.WriteLine();
                         //Console.ReadKey();
@@ -72,28 +72,38 @@ namespace CrossingRiverBFS
             if (found) return currentNode;
             return null;
         }
-        //private static void AddNeighbors(Node node) {
-        //    int[] newState;
-        //    if (zPos / 3 > 0) {
-        //        newState = North(node.State, zPos);
-        //        node.Neighbors.Add(new Neighbor(new Node(newState), 1));
-        //    }
-        //    if (zPos / 3 < 2)
-        //    {
-        //        newState = South(node.State, zPos);
-        //        node.Neighbors.Add(new Neighbor(new Node(newState), 1));
-        //    }
-        //    if (zPos % 3 < 2)
-        //    {
-        //        newState = East(node.State, zPos);
-        //        node.Neighbors.Add(new Neighbor(new Node(newState), 1));
-        //    }
-        //    if (zPos % 3 > 0)
-        //    {
-        //        newState = West(node.State, zPos);
-        //        node.Neighbors.Add(new Neighbor(new Node(newState), 1));
-        //    }
-        //}
+        private static void AddNeighbors(Node node)
+        {
+            bool[] newState;
+            //can always move the farmer
+            newState = MoveFarmer(node.State);
+            //only add it is not a dead state
+            if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
+
+            //check if farmer and fox are on the same side of the river
+            if (node.State[(int)label.FARMER] == node.State[(int)label.FOX]) {
+                newState = MoveFarmerFox(node.State);
+                //only add it is not a dead state
+                if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
+            }
+
+            //check if farmer and chicken are on the same side of the river
+            if (node.State[(int)label.FARMER] == node.State[(int)label.CHICKEN])
+            {
+                newState = MoveFarmerChicken(node.State);
+                //only add it is not a dead state
+                if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
+            }
+
+            //check if farmer and grains are on the same side of the river
+            if (node.State[(int)label.FARMER] == node.State[(int)label.GRAINS])
+            {
+                newState = MoveFarmerGrains(node.State);
+                //only add it is not a dead state
+                if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
+            }
+
+        }
         private static bool IsInTheBorder(Node node, List<Path> border)
         {
             foreach (Path path in border)
@@ -102,47 +112,61 @@ namespace CrossingRiverBFS
             }
             return false;
         }
-        public static int[] North(int[] state, int zPos) {
-            int[] newState = null;
-            if ((zPos/3) > 0) {
-                newState = state.ToArray();
-                newState[zPos] = state[zPos - 3];
-                newState[zPos - 3] = state[zPos];
-            }
+        public static bool[] MoveFarmer(bool[] state) {
+            bool[] newState = null;
+            
+            newState = state.ToArray();
+            newState[(int)label.FARMER] = !newState[(int)label.FARMER]; //changing farmer's side
+
+            if (IsDeadState(newState)) return null;
+
             return newState;
         }
-        public static int[] South(int[] state, int zPos)
+        public static bool[] MoveFarmerFox(bool[] state)
         {
-            int[] newState = null;
-            if ((zPos / 3) < 2)
-            {
-                newState = state.ToArray();
-                newState[zPos] = state[zPos + 3];
-                newState[zPos + 3] = state[zPos];
-            }
+            bool[] newState = null;
+
+            newState = state.ToArray();
+            newState[(int)label.FARMER] = !newState[(int)label.FARMER]; //changing farmer's side
+            newState[(int)label.FOX] = !newState[(int)label.FOX]; //changing fox's side
+
+            if (IsDeadState(newState)) return null;
+
             return newState;
         }
-        public static int[] East(int[] state, int zPos)
+        public static bool[] MoveFarmerChicken(bool[] state)
         {
-            int[] newState = null;
-            if ((zPos % 3) < 2)
-            {
-                newState = state.ToArray();
-                newState[zPos] = state[zPos + 1];
-                newState[zPos + 1] = state[zPos];
-            }
+            bool[] newState = null;
+
+            newState = state.ToArray();
+            newState[(int)label.FARMER] = !newState[(int)label.FARMER]; //changing farmer's side
+            newState[(int)label.CHICKEN] = !newState[(int)label.CHICKEN]; //changing chicken's side
+
+            if (IsDeadState(newState)) return null;
+
             return newState;
         }
-        public static int[] West(int[] state, int zPos)
+        public static bool[] MoveFarmerGrains(bool[] state)
         {
-            int[] newState = null;
-            if ((zPos % 3) > 0)
-            {
-                newState = state.ToArray();
-                newState[zPos] = state[zPos - 1];
-                newState[zPos - 1] = state[zPos];
-            }
+            bool[] newState = null;
+
+            newState = state.ToArray();
+            newState[(int)label.FARMER] = !newState[(int)label.FARMER]; //changing farmer's side
+            newState[(int)label.GRAINS] = !newState[(int)label.GRAINS]; //changing grain's side
+
+            if (IsDeadState(newState)) return null;
+
             return newState;
+        }
+        public static bool IsDeadState(bool[] state)
+        {   //checking if the fox is alone with the chicken
+            bool foxChicken = (state[(int)label.FOX] && state[(int)label.CHICKEN] && !state[(int)label.FARMER]) ||
+                              (!state[(int)label.FOX] && !state[(int)label.CHICKEN] && state[(int)label.FARMER]);
+            //checking if the grains are alone with the chicken
+            bool chickenGrains = (state[(int)label.GRAINS] && state[(int)label.CHICKEN] && !state[(int)label.FARMER]) ||
+                                 (!state[(int)label.GRAINS] && !state[(int)label.CHICKEN] && state[(int)label.FARMER]);
+
+            return (foxChicken || chickenGrains);
         }
     }
 }

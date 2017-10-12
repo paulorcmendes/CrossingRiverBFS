@@ -14,10 +14,23 @@ namespace CrossingRiverBFS
     {
         static void Main(string[] args)
         {
-            bool[] init = { false, true, false, true };
+            bool[] init = { false, false, false, false};
+            bool[] goal = { true, true, true, true};
 
-            Console.WriteLine(Node.ShowState(init));
-            //Console.Write(GraphSearch.BreadthFirstSearch(n1, n2));
+            Node n1 = new Node(init);
+            Node n2 = new Node(goal);
+
+            //Console.WriteLine(Node.ShowState(init));
+            Path path = GraphSearch.BreadthFirstSearch(n1, n2);
+            if (path != null)
+            {
+                Console.WriteLine(path);
+            }
+            else
+            {
+                Console.WriteLine("Path not found :(");
+            }
+
             Console.ReadKey();
         }        
     }

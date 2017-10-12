@@ -11,23 +11,11 @@ namespace CrossingRiverBFS
     {
         private List<Neighbor> neighbors;
         private bool[] state;
-        private int expectation;
 
         public Node(bool[] state)
         {
             this.State = state;
             this.neighbors = new List<Neighbor>();
-            this.expectation = 0;
-        }
-        public int Expectation {
-            get
-            {
-                return expectation;
-            }
-            set
-            {
-                expectation = value;
-            }
         }
         public bool[] State
         {
@@ -47,7 +35,7 @@ namespace CrossingRiverBFS
                 return this.neighbors;
             }
         }
-        public static string ShowState(bool[] s)
+        public string ShowState(bool[] s)
         {
             if (s == null) return null;
             string msg0 = "";
@@ -64,7 +52,7 @@ namespace CrossingRiverBFS
 
             if (s[(int)label.FOX]) msg1 += label.FOX.ToString() + " ";
             else msg0 += label.FOX.ToString() + " ";
-
+            
             return msg0 + " | " + msg1;
         }
         public override String ToString()

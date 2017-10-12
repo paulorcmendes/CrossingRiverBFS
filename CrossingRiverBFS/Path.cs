@@ -50,7 +50,7 @@ namespace CrossingRiverBFS
             string msg = "";
             foreach (Node node in path)
             {
-                msg += node;
+                msg += node+"\n\n";
             }
             return msg;
         }
@@ -62,18 +62,7 @@ namespace CrossingRiverBFS
 
         public int CompareTo(Path other)
         {   
-            if(myCategory == CATEGORY.A_STAR)
-            {
-                int v1 = GetCostWithExpectation();
-                int v2 = other.GetCostWithExpectation();
-
-                return v1.CompareTo(v2);
-            }         
             return Cost.CompareTo(other.Cost);
-        }
-        public int GetCostWithExpectation()
-        {
-            return Cost + Node.Expectation;
         }
     }
 }
