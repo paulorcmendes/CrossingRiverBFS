@@ -72,18 +72,19 @@ namespace CrossingRiverBFS
             if (found) return currentNode;
             return null;
         }
+        //exploring the possible neighbors of a node
         private static void AddNeighbors(Node node)
         {
             bool[] newState;
             //can always move the farmer
             newState = MoveFarmer(node.State);
-            //only add it is not a dead state
+            //only add it if it is not a dead state
             if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
 
             //check if farmer and fox are on the same side of the river
             if (node.State[(int)label.FARMER] == node.State[(int)label.FOX]) {
                 newState = MoveFarmerFox(node.State);
-                //only add it is not a dead state
+                //only add it if it is not a dead state
                 if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
             }
 
@@ -91,7 +92,7 @@ namespace CrossingRiverBFS
             if (node.State[(int)label.FARMER] == node.State[(int)label.CHICKEN])
             {
                 newState = MoveFarmerChicken(node.State);
-                //only add it is not a dead state
+                //only add it if it is not a dead state
                 if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
             }
 
@@ -99,7 +100,7 @@ namespace CrossingRiverBFS
             if (node.State[(int)label.FARMER] == node.State[(int)label.GRAINS])
             {
                 newState = MoveFarmerGrains(node.State);
-                //only add it is not a dead state
+                //only add it if it is not a dead state
                 if (newState != null) node.Neighbors.Add(new Neighbor(new Node(newState), 1));
             }
 
@@ -158,6 +159,7 @@ namespace CrossingRiverBFS
 
             return newState;
         }
+        //dead state: state where the game is over
         public static bool IsDeadState(bool[] state)
         {   //checking if the fox is alone with the chicken
             bool foxChicken = (state[(int)label.FOX] && state[(int)label.CHICKEN] && !state[(int)label.FARMER]) ||

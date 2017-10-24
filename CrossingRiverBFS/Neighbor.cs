@@ -8,6 +8,9 @@ namespace CrossingRiverBFS
 {
     class Neighbor
     {
+        //neighbor represents a node and a distance.
+        //I use this class in order to not use two different lists, one for nodes that are neighbors and the costs.
+        //I use one single list of the class neighbors, instead.
         private Node node;
         private int cost;
 

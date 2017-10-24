@@ -35,6 +35,7 @@ namespace CrossingRiverBFS
                 return this.neighbors;
             }
         }
+        //to string, basically
         public string ShowState(bool[] s)
         {
             if (s == null) return null;

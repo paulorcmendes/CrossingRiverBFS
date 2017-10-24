@@ -14,6 +14,14 @@ namespace CrossingRiverBFS
     {
         static void Main(string[] args)
         {
+            //each position of the vector represents the side of each item
+            /* 0 - farmer
+             * 1 - grains
+             * 2 - chicken
+             * 3 - fox
+             * if the value in the position is false, it means it is on the left side of the river
+             * if it is true, it is on the right side
+             * */
             bool[] init = { false, false, false, false};
             bool[] goal = { true, true, true, true};
 
