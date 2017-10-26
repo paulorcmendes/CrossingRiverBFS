@@ -5,11 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CrossingRiverBFS
-{
-    //Developed by Paulo Renato Conceição Mendes
-    //Based on professor Bruno Feres' slides
-    //more info: https://github.com/paulorcmendes/CrossingRiverBFS
-    //based also on my implementation of the Romanian cities: https://github.com/paulorcmendes/GraphSearchAlgorithms
+{    
     public enum CATEGORY{BREADTH_FIRST, UNIFORM_COST, A_STAR}
     class Path : Neighbor, IComparable<Path>
     {

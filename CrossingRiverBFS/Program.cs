@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace CrossingRiverBFS
-{
-
+{   //Developed by Paulo Renato Conceição Mendes
+    //Based on professor Bruno Feres' slides
+    //more info: https://github.com/paulorcmendes/CrossingRiverBFS
+    //based also on my implementation of the Romanian cities: https://github.com/paulorcmendes/GraphSearchAlgorithms
     public enum label {
         FARMER = 0,
         GRAINS = 1,
@@ -13,6 +15,7 @@ namespace CrossingRiverBFS
     }
     class Program
     {
+
         public static bool[] ReadState() {
             string[] names = { "Farmer", "Grains", "Chicken", "Fox" };
             bool[] state = new bool[4];
